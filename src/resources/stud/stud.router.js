@@ -19,21 +19,17 @@ router.get("/api/stud/find/:id", async (req, res) => {
       id: 0,
     }
   );
-  // const studvm = new {
 
-  // }
-  //user.find({},)
   if (info) await res.send(info);
   else res.status(404).send("موردی یافت نشد");
-  //res.send(info);
 });
 router.get("/api/stud/next/:code/:seat", async (req, res) => {
   let c_code = req.params.code;
   let s_number = req.params.seat;
   let infos = await user
-    .find({ course_code: c_code, seat_number: { $gte: s_number - 2 } })
-    .limit(5);
+    .find({ course_code: c_code, seat_number: { $gte: (s_number - 3) } })
+    .limit(5)
+    .sort({ seat_number: 1 });
   res.send(infos);
-  console.log(infos);
 });
 module.exports = router;

@@ -4,20 +4,21 @@ const persianDate = require("persian-date");
 require("dotenv").config();
 const bot = new telegramBot(process.env.TOKEN, { polling: true });
 const init = () => {
+  bot.onText(/\/start/, (msg) => {
+    bot.sendMessage(msg.chat.id, "شماره دانشجویی: ");
+  });
   bot.on("message", (message) => {
-    bot.onText(/\/start/, (msg) => {
-      bot.sendMessage(msg.chat.id, "شماره دانشجویی: ");
-    });
     let text = message.text;
     let chatid = message.chat.id;
     const regx = /^[0-9]{1,9}$/;
-    if (!text.match(regx)) {
-      bot.sendMessage(
-        message.chat.id,
-        "شماره دانشجویی نامعتبر! \n دوباره امتحان کنید:"
-      );
-      return "";
-    }
+    if (text !== null)
+      if (!text.match(regx) && text != "/start" && text) {
+        bot.sendMessage(
+          message.chat.id,
+          "شماره دانشجویی نامعتبر! \n دوباره امتحان کنید:"
+        );
+        return ;
+      }
     axios
       .get(`http://localhost:5000/api/stud/find/${text}`)
       .then((res) => {
@@ -30,7 +31,6 @@ const init = () => {
           \n محل آزمون: ${obj.department}
           \n کلاس:  '${obj.class}'
           \n ردیف: '${obj.row}'
-          \n .
           `;
           bot.sendMessage(chatid, stud, {
             reply_markup: {
@@ -48,6 +48,13 @@ const init = () => {
             },
           });
         });
+        if (res.data.length <= 0) {
+          bot.sendMessage(
+            chatid,
+            "موردی یافت نشد! \n\n این خطا ممکن است به دلیل منتشر نشدن شماره صندلی های امتحانات پیش رو در سایت دانشگاه باشد. \n \n درصورت نیاز به بروز رسانی به ما اطلاع دهید."
+          );
+          return;
+        }
       })
       .catch((err) => console.log(err));
   });
@@ -55,18 +62,28 @@ const init = () => {
     const msg = callbackQuery.message;
     const data = JSON.parse(callbackQuery.data);
     axios
-    .get(`http://localhost:5000/api/stud/next/${data.course_code}/${data.seat_number}`)
-    .then((res) => {
-      res.data.forEach((obj) => {
-        let stud = ` \n  ${obj.name + " " + obj.fname}  
-        \n شماره صندلی: ${obj.seat_number}   
-        \n . `;
-        bot
-        .answerCallbackQuery(callbackQuery.id)
-        .then(() => bot.sendMessage(msg.chat.id, stud));     
-      });
-    })
-    .catch((err) => console.log(err));
+      .get(
+        `http://localhost:5000/api/stud/next/${data.course_code}/${data.seat_number}`
+      )
+      .then((res) => {
+        for (let i = 0; i < res.data.length; i++) {
+          let stud = ` \n  ${res.data[i].name + " " + res.data[i].fname}  
+          \n شماره صندلی: ${res.data[i].seat_number}`;
+            bot
+              .answerCallbackQuery(callbackQuery.id)
+              .then(() => bot.sendMessage(msg.chat.id, stud));         
+        }
+        // res.data.forEach((obj) => {
+        //   let stud = ` \n  ${obj.name + " " + obj.fname}  
+        // \n شماره صندلی: ${obj.seat_number}`;
+        //   bot
+        //     .answerCallbackQuery(callbackQuery.id)
+        //     .then(() => bot.sendMessage(msg.chat.id, stud));
+        // });
+      })
+      .catch((err) => console.log(err));
   });
 };
+
+
 module.exports = init;

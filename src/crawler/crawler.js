@@ -28,15 +28,13 @@ const getLinks = async (url) => {
       }
     });
     links = links.slice(-5);
-    console.log(links);
   } catch (error) {
     console.log(error);
   }
 };
 
 const ExcelTodb = async (file) => {
-  console.log("im here");
-  try {
+  console.log("im here");  try {
     await sleep(3000);
     const data = excelToJson({
       sourceFile: "./shared/" + file,
