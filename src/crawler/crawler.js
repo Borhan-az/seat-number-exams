@@ -74,7 +74,6 @@ const ExcelTodb = async (file) => {
           : new Date(obj.time).getHours() +':' + new Date(obj.time).getMinutes() 
       }`, 
     }));
-    //console.log(data.Sheet1);
     await user.insertMany(data.Sheet1, (err, data) => {
       if (err) {
         console.log(err);

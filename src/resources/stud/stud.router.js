@@ -4,8 +4,8 @@ const user = require("./stud.model");
 const crawler = require("../../crawler/crawler");
 const router = Router();
 
-router.get("/updateData", async (req, res) => {
-  let key = req.query.key;
+router.get("/updateData/:key", async (req, res) => {
+  let key = req.params.key;
   if (key == process.env.KEY) crawler();
   throw "oops wrong place!";
 });
