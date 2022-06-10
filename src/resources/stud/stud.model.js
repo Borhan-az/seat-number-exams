@@ -23,7 +23,8 @@ var usersSchema = new mongoose.Schema({
     type: String,
   },
   time: {
-    type: String,
+    type: String ,
+    
   },
   seat_number: {
     type: Number,
