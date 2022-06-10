@@ -33,27 +33,11 @@ const getLinks = async (url) => {
     console.log(error);
   }
 };
-const downloadFiles = async (links) => {
-  for (const link of links) {
-    let name = link.name;
-    let url = link._link;
-    let file = await fs.createWriteStream("shared/" + name);
-    const response = await axios({
-      url,
-      method: "GET",
-      responseType: "stream",
-    });
-    await response.data.pipe(file);
-  }
-
-  for (const f of links) {
-    await ExcelTodb(f.name);
-  }
-};
 
 const ExcelTodb = async (file) => {
   console.log("im here");
   try {
+    await sleep(3000);
     const data = excelToJson({
       sourceFile: "./shared/" + file,
       sheets: [
@@ -81,8 +65,18 @@ const ExcelTodb = async (file) => {
         N: "row",
       },
     });
-    console.log(data.Sheet1);
-
+    data.Sheet1 = data.Sheet1.map((obj) => ({
+      ...obj,
+      date: `${obj.date} - ${
+        new Date(obj.time).getHours() == 12
+          ? new Date(obj.time).getHours() +
+            1 +
+            ":" +
+            (new Date(obj.time).getMinutes() + 5)
+          : new Date(obj.time).getHours() +':' + new Date(obj.time).getMinutes() 
+      }`, 
+    }));
+    //console.log(data.Sheet1);
     await user.insertMany(data.Sheet1, (err, data) => {
       if (err) {
         console.log(err);
@@ -102,8 +96,31 @@ const downloads = async (links) => {
     console.log("collection removed");
   });
   await downloadFiles(links);
-
 };
+
+const downloadFiles = async (links) => {
+  for (const link of links) {
+    let name = link.name;
+    let url = link._link;
+    let file = await fs.createWriteStream("shared/" + name);
+    const response = await axios({
+      url,
+      method: "GET",
+      responseType: "stream",
+    });
+    await response.data.pipe(file);
+    await sleep(6000);
+  }
+
+  for (const f of links) {
+    await ExcelTodb(f.name);
+  }
+};
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
 const init = async () => {
   await getLinks(_url);
   await downloads(links);
