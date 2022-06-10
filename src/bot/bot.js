@@ -19,8 +19,9 @@ const init = () => {
         );
         return ;
       }
+      
     axios
-      .get(`http://localhost:5000/api/stud/find/${text}`)
+      .get(`https://exampnu.herokuapp.com:5000/api/stud/find/${text}`)
       .then((res) => {
         res.data.forEach((obj) => {
           let stud = ` \n  ${obj.name + " " + obj.fname}  
@@ -63,7 +64,7 @@ const init = () => {
     const data = JSON.parse(callbackQuery.data);
     axios
       .get(
-        `http://localhost:5000/api/stud/next/${data.course_code}/${data.seat_number}`
+        `https://exampnu.herokuapp.com:5000/api/stud/next/${data.course_code}/${data.seat_number}`
       )
       .then((res) => {
         for (let i = 0; i < res.data.length; i++) {
