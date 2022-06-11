@@ -14,7 +14,7 @@ const start = () => {
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
       console.log(`run in port: ${PORT}`);
-      console.log(`base url: `,process.env. )
+      console.log(`base url: `,process.env.URL );
       console.log(`mongodb addr:`,process.env.MONGODB_URI);
       //connect to db
       mongoose
