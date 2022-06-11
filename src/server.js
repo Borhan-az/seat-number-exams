@@ -5,6 +5,17 @@ require('dotenv').config();
 const { default: mongoose } = require("mongoose");
 const app = express();
 const studRoute = require('./resources/stud/stud.router');
+
+// const { MongoClient, ServerApiVersion } = require('mongodb');
+// const uri = "mongodb+srv://borhan:borhan1379@cluster0.scd5zxs.mongodb.net/?retryWrites=true&w=majority";
+// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+// client.connect(err => {
+//   const collection = client.db("test").collection("devices");
+//   // perform actions on the collection object
+//   client.close();
+// });
+
+
 app.disable("x-powered-by");
 
 app.use(bodyParser.json());
