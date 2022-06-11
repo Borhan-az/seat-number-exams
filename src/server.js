@@ -15,7 +15,7 @@ const start = () => {
       console.log(`REST API on http://localhost:${5000}`);
       //connect to db
       mongoose
-        .connect("mongodb://localhost:27017/PnuNumberDb", {
+        .connect("mongodb://exampnu.herokuapp.com/:27017/PnuNumberDb", {
           useNewUrlParser: true,
         })
         .then(() => console.log("connected to db"))
