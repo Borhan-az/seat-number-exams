@@ -22,7 +22,6 @@ const init = () => {
 
     axios
       .get(
-        //process.env.+ `/api/stud/find/${text}` ||
           `https://exampnu.herokuapp.com/api/stud/find/${text}`
       )
       .then((res) => {
@@ -67,8 +66,6 @@ const init = () => {
     const data = JSON.parse(callbackQuery.data);
     axios
       .get(
-        process.env.baseURL +
-          //`/api/stud/next/${data.course_code}/${data.seat_number}` ||
           `https://exampnu.herokuapp.com/api/stud/next/${data.course_code}/${data.seat_number}`
       )
       .then((res) => {
