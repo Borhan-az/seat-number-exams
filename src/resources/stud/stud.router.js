@@ -7,7 +7,7 @@ const router = Router();
 router.get("/api/stud/updateData", async (req, res) => {
   // let key = req.params.key;
    crawler();
-   send.res('Ok');
+   res.send('Ok');
   //throw "oops wrong place!";
 });
 
