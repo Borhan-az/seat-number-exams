@@ -35,7 +35,7 @@ const getLinks = async (url) => {
 
 const ExcelTodb = async (file) => {
   console.log("im here");  try {
-    await sleep(3000);
+    await sleep(4000);
     const data = excelToJson({
       sourceFile: "./shared/" + file,
       sheets: [
@@ -99,7 +99,7 @@ const downloadFiles = async (links) => {
   for (const link of links) {
     let name = link.name;
     let url = link._link;
-    let file = await fs.createWriteStream("shared/" + name);
+    let file = fs.createWriteStream("shared/" + name);
     const response = await axios({
       url,
       method: "GET",
