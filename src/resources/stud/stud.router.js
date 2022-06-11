@@ -5,10 +5,8 @@ const crawler = require("../../crawler/crawler");
 const router = Router();
 
 router.get("/api/stud/updateData", async (req, res) => {
-  // let key = req.params.key;
-   crawler();
-   res.send('Ok');
-  //throw "oops wrong place!";
+  crawler();
+  res.send("Ok");
 });
 
 router.get("/api/stud/find/:id", async (req, res) => {
@@ -28,7 +26,7 @@ router.get("/api/stud/next/:code/:seat", async (req, res) => {
   let c_code = req.params.code;
   let s_number = req.params.seat;
   let infos = await user
-    .find({ course_code: c_code, seat_number: { $gte: (s_number - 3) } })
+    .find({ course_code: c_code, seat_number: { $gte: s_number - 3 } })
     .limit(5)
     .sort({ seat_number: 1 });
   res.send(infos);

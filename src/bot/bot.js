@@ -76,13 +76,7 @@ const init = () => {
             .answerCallbackQuery(callbackQuery.id)
             .then(() => bot.sendMessage(msg.chat.id, stud));
         }
-        // res.data.forEach((obj) => {
-        //   let stud = ` \n  ${obj.name + " " + obj.fname}
-        // \n شماره صندلی: ${obj.seat_number}`;
-        //   bot
-        //     .answerCallbackQuery(callbackQuery.id)
-        //     .then(() => bot.sendMessage(msg.chat.id, stud));
-        // });
+
       })
       .catch((err) => console.log(err));
   });
