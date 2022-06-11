@@ -17,11 +17,14 @@ const init = () => {
           message.chat.id,
           "شماره دانشجویی نامعتبر! \n دوباره امتحان کنید:"
         );
-        return ;
+        return;
       }
-      
+
     axios
-      .get(`https://exampnu.herokuapp.com:5000/api/stud/find/${text}`)
+      .get(
+        process.env.baseURL + `/api/stud/find/${text}` ||
+          `https://exampnu.herokuapp.com:/api/stud/find/${text}`
+      )
       .then((res) => {
         res.data.forEach((obj) => {
           let stud = ` \n  ${obj.name + " " + obj.fname}  
@@ -64,18 +67,20 @@ const init = () => {
     const data = JSON.parse(callbackQuery.data);
     axios
       .get(
-        `https://exampnu.herokuapp.com:5000/api/stud/next/${data.course_code}/${data.seat_number}`
+        process.env.baseURL +
+          `/api/stud/next/${data.course_code}/${data.seat_number}` ||
+          `https://exampnu.herokuapp.com:5000/api/stud/next/${data.course_code}/${data.seat_number}`
       )
       .then((res) => {
         for (let i = 0; i < res.data.length; i++) {
           let stud = ` \n  ${res.data[i].name + " " + res.data[i].fname}  
           \n شماره صندلی: ${res.data[i].seat_number}`;
-            bot
-              .answerCallbackQuery(callbackQuery.id)
-              .then(() => bot.sendMessage(msg.chat.id, stud));         
+          bot
+            .answerCallbackQuery(callbackQuery.id)
+            .then(() => bot.sendMessage(msg.chat.id, stud));
         }
         // res.data.forEach((obj) => {
-        //   let stud = ` \n  ${obj.name + " " + obj.fname}  
+        //   let stud = ` \n  ${obj.name + " " + obj.fname}
         // \n شماره صندلی: ${obj.seat_number}`;
         //   bot
         //     .answerCallbackQuery(callbackQuery.id)
@@ -85,6 +90,5 @@ const init = () => {
       .catch((err) => console.log(err));
   });
 };
-
 
 module.exports = init;
