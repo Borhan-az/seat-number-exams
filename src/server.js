@@ -19,7 +19,7 @@ const start = () => {
       console.log(`mongodb addr:`,process.env.MONGODB_URI);
       //connect to db
       mongoose
-        .connect(process.env.MONGODB_URI , {
+        .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/PnuNumberDb", {
           useNewUrlParser: true,
         })
         .then(() => console.log("connected to db: ",process.env.MONGODB_URI))
