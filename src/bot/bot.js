@@ -23,7 +23,7 @@ const init = () => {
     axios
       .get(
         //process.env.+ `/api/stud/find/${text}` ||
-          `https://exampnu.herokuapp.com:${process.env.PORT}/api/stud/find/${text}`
+          `https://exampnu.herokuapp.com/api/stud/find/${text}`
       )
       .then((res) => {
         res.data.forEach((obj) => {
@@ -69,7 +69,7 @@ const init = () => {
       .get(
         process.env.baseURL +
           //`/api/stud/next/${data.course_code}/${data.seat_number}` ||
-          `https://exampnu.herokuapp.com:${process.env.PORT}/api/stud/next/${data.course_code}/${data.seat_number}`
+          `https://exampnu.herokuapp.com/api/stud/next/${data.course_code}/${data.seat_number}`
       )
       .then((res) => {
         for (let i = 0; i < res.data.length; i++) {
